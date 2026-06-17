@@ -227,6 +227,14 @@ declare_win:
     syscall
     jmp exit
 
+declare_draw:
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, msg_nul
+    mov rdx, len_nul
+    syscall
+    jmp exit
+
 exit:
     mov rax, 60
     xor rdi, rdi
