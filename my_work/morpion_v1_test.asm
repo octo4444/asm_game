@@ -180,20 +180,26 @@ ask_input:
     syscall
     jmp ask_input
 
-
 check_win:
     mov rcx, 0
 
 .check_loop:
-    movzx r8, byte [win_lines + rcx]
-    movzx r9, byte [win_lines + rcx + 1]
+    movzx r8,  byte [win_lines + rcx]
+    movzx r9,  byte [win_lines + rcx + 1]
     movzx r10, byte [win_lines + rcx + 2]
 
     mov al, byte [board + r8]
     mov bl, byte [board + r9]
     mov dl, byte [board + r10]
 
+    cmp al, 0
+    je .next_line
+
+    ; Les 3 cases doivent être identiques
     cmp al, bl
+    jne .next_line
+
+    cmp al, dl
     jne .next_line
 
     mov al, 1
