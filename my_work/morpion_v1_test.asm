@@ -164,7 +164,7 @@ ask_input:
     cmp al, 8
     jg .invalid
 
-    movzx rbx, la
+    movzx rbx, al
     cmp byte [board + rbx], 0
     jne .invalid
 
