@@ -49,7 +49,7 @@ game_loop:
     call print_board
 
     cmp byte [turn_count], 9
-    jge declare_draw
+    je declare_draw
 
     call ask_input
 
@@ -145,6 +145,11 @@ ask_input:
 .print_j1:
     mov rsi, msg_j1
     mov rdx, len_j1
+
+.print:
+    mov rax, 1
+    mov rdi, 1
+    syscall
 
 .read_input:
     mov rax, 0
