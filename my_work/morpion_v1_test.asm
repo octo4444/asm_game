@@ -10,13 +10,13 @@ section .data
     len_err equ $-msg_err
 
     msg_win1 db "player one (X) you win !!!! GG", 10
-    len_win1 $-msg_win1
+    len_win1 equ $-msg_win1
 
     msg_win2 db "player two (O) you win !!!! GG", 10
-    len_win2 $-msg_win2
+    len_win2 equ $-msg_win2
 
     msg_nul db "nobody win...", 10
-    len_nul $-msg_nul
+    len_nul equ $-msg_nul
 
 
     sep db "---|---|---", 10
