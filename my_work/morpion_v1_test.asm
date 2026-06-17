@@ -1,5 +1,8 @@
 ;first version !!!!
 section .data 
+    pipe db " | "
+    len_pipe equ $-pipe
+
     msg_j1 db "ready player one (X) ? it is your turn : "
     len_j1 equ $-msg_j1
 
@@ -40,13 +43,13 @@ section .text
 
 _start:
     mov byte [current_player], 1
-    mov byte [turn_count], 1
+    mov byte [turn_count], 0
 
 game_loop:
     call print_board
 
     cmp byte [turn_count], 9
-    je declare_draw 
+    jge declare_draw
 
     call ask_input
 
@@ -74,16 +77,16 @@ print_board:
     
     mov bl, byte [board + rax]
 
-    mov cl, ""
+    mov cl, ' '
     cmp bl, 1
     jne .check_o
-    mov cl, "X"
+    mov cl, 'X'
     jmp .print_char
 
 .check_o:
     cmp bl, 2
     jne .print_char
-    mov cl, "O"
+    mov cl, 'O'
 
 .print_char:
     push rcx
@@ -96,13 +99,11 @@ print_board:
 
     cmp r13, 2
     je .end_col
-    push " | "
     mov rax, 1
     mov rdi, 1
-    mov rsi, rsp
-    mov rdx, 3
+    mov rsi, pipe
+    mov rdx, len_pipe
     syscall
-    pop rcx
 
 .end_col:
     inc r13
@@ -144,10 +145,7 @@ ask_input:
 .print_j1:
     mov rsi, msg_j1
     mov rdx, len_j1
-.print:
-    mov rax, 1
-    mov rdi, 1
-    syscall
+
 .read_input:
     mov rax, 0
     mov rdi, 0
@@ -215,15 +213,23 @@ check_win:
 
 declare_win:
     call print_board
+
     cmp byte [current_player], 1
     je .win_p1
+
     mov rsi, msg_win2
     mov rdx, len_win2
-    jmp .end
+    jmp .print
 
 .win_p1:
     mov rsi, msg_win1
     mov rdx, len_win1
+
+.print:
+    mov rax, 1
+    mov rdi, 1
+    syscall
+    jmp exit
 
 .end:
     mov rax, 1
