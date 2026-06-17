@@ -107,7 +107,7 @@ print_board:
 .end_col:
     inc r13
     cmp r13, 3
-    jm .col_loop
+    jl .col_loop
 
     mov rax, 1
     mov rdi, 1
